@@ -42,13 +42,18 @@ try {
     const total = () => Object.values(store.state.resources).reduce((a, b) => a + (b || 0), 0);
     const before = total();
     document.querySelector('[data-panel="resources"]').click();
-    await new Promise(r => setTimeout(r, 300));
-    const buttons = Array.from(document.querySelectorAll('.panel .btn')).filter(b => b.textContent.trim() === 'اجمع' || b.textContent.trim() === 'Gather');
-    if (buttons.length === 0) return { ok: false, reason: 'no gather button' };
+    await new Promise(r => setTimeout(r, 500));
+    const panels = Array.from(document.querySelectorAll('.panel'));
+    const body = panels.length ? panels[panels.length - 1].querySelector('.panel-body') : null;
+    const buttons = body ? Array.from(body.querySelectorAll('.card .btn')) : [];
+    const label = buttons[0] ? buttons[0].textContent.trim() : null;
+    if (buttons.length === 0) {
+      return { ok: false, reason: 'no gather button', panelCount: panels.length, bodyHead: body ? body.textContent.trim().slice(0, 120) : null };
+    }
     buttons[0].click();
     await new Promise(r => setTimeout(r, 400));
     const after = total();
-    return { ok: after > before, before, after, buttonCount: buttons.length };
+    return { ok: after > before, before, after, buttonCount: buttons.length, label };
   })()`);
   check('gathering adds resources to the stock', gatherViaUi.ok === true, JSON.stringify(gatherViaUi));
 
@@ -73,8 +78,14 @@ try {
     const engine = window.GENESIS.engine();
     const store = engine.store;
     const before = { wood: store.getResource('wood'), stone: store.getResource('stone'), buildings: engine.state.base.buildings.length };
-    const buttons = Array.from(document.querySelectorAll('.panel .btn')).filter(b => b.textContent.includes('ابدأ البناء') || b.textContent.includes('Start construction'));
-    if (buttons.length === 0) return { ok: false, reason: 'no build buttons' };
+    document.querySelector('[data-panel="construction"]').click();
+    await new Promise(r => setTimeout(r, 500));
+    const panels = Array.from(document.querySelectorAll('.panel'));
+    const body = panels.length ? panels[panels.length - 1].querySelector('.panel-body') : null;
+    const buttons = body ? Array.from(body.querySelectorAll('.grid-2 .card .btn')) : [];
+    if (buttons.length === 0) {
+      return { ok: false, reason: 'no build buttons', panelCount: panels.length, bodyHead: body ? body.textContent.trim().slice(0, 120) : null };
+    }
     buttons[0].click();
     await new Promise(r => setTimeout(r, 500));
     const after = { wood: store.getResource('wood'), stone: store.getResource('stone'), buildings: engine.state.base.buildings.length };
@@ -89,11 +100,15 @@ try {
     const coinsBefore = store.getResource('coins');
     const livingBefore = store.livingCount();
     document.querySelector('[data-panel="tavern"]').click();
-    await new Promise(r => setTimeout(r, 400));
-    const card = document.querySelector('.panel .tavern-card');
+    await new Promise(r => setTimeout(r, 500));
+    const panels = Array.from(document.querySelectorAll('.panel'));
+    const body = panels.length ? panels[panels.length - 1].querySelector('.panel-body') : null;
+    const card = body ? body.querySelector('.tavern-card') : null;
     const priceText = card ? card.querySelector('.price-tag')?.textContent ?? '' : '';
-    const btn = card ? Array.from(card.querySelectorAll('.btn')).find(b => b.textContent.includes('ضمّ') || b.textContent.includes('Recruit')) : null;
-    if (!btn) return { ok: false, reason: 'no recruit button', priceText };
+    const btn = card ? card.querySelector('.btn') : null;
+    if (!btn) {
+      return { ok: false, reason: 'no recruit button', priceText, panelCount: panels.length, bodyHead: body ? body.textContent.trim().slice(0, 120) : null };
+    }
     btn.click();
     await new Promise(r => setTimeout(r, 500));
     const coinsAfter = store.getResource('coins');
@@ -125,25 +140,28 @@ try {
     const engine = window.GENESIS.engine();
     const store = engine.store;
     document.querySelector('[data-panel="combat"]').click();
-    await new Promise(r => setTimeout(r, 500));
-    const rows = Array.from(document.querySelectorAll('.panel .combatant-row'));
-    if (rows.length === 0) return { ok: false, reason: 'no combatants' };
+    await new Promise(r => setTimeout(r, 600));
+    const panels = Array.from(document.querySelectorAll('.panel'));
+    const body = panels.length ? panels[panels.length - 1].querySelector('.panel-body') : null;
+    const rows = body ? Array.from(body.querySelectorAll('.combatant-row')) : [];
+    if (rows.length === 0) {
+      return { ok: false, reason: 'no combatants', panelCount: panels.length, bodyHead: body ? body.textContent.trim().slice(0, 140) : null };
+    }
     rows[0].click();
-    await new Promise(r => setTimeout(r, 200));
-    const strength = document.querySelector('#team-strength')?.textContent ?? '0';
+    await new Promise(r => setTimeout(r, 250));
+    const strength = body.querySelector('#team-strength')?.textContent ?? '0';
     const foodBefore = store.getResource('food');
     const coinsBefore = store.getResource('coins');
-    const fight = Array.from(document.querySelectorAll('.panel .btn')).find(b => b.textContent.trim() === 'قاتل' || b.textContent.trim() === 'Fight');
-    if (!fight) return { ok: false, reason: 'no fight button' };
+    const cards = Array.from(body.querySelectorAll('.card'));
+    const fight = cards.map(c => c.querySelector('.btn')).find(Boolean);
+    if (!fight) return { ok: false, reason: 'no fight button', rows: rows.length };
     fight.click();
-    await new Promise(r => setTimeout(r, 800));
-    const log = document.querySelector('.battle-log')?.textContent ?? '';
-    const foodAfter = store.getResource('food');
-    const coinsAfter = store.getResource('coins');
+    await new Promise(r => setTimeout(r, 900));
+    const log = body.querySelector('.battle-log')?.textContent ?? '';
     return {
       ok: log.length > 20,
       strength, rows: rows.length,
-      foodBefore, foodAfter, coinsBefore, coinsAfter,
+      foodBefore, foodAfter: store.getResource('food'), coinsBefore, coinsAfter: store.getResource('coins'),
       logHead: log.slice(0, 120),
     };
   })()`);
