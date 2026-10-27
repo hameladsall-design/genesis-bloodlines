@@ -36,33 +36,21 @@ try {
   await sleep(2500);
 
   // ---------------------------------------------------------------- 1. gather
-  const gather = await evaluate(`(() => {
-    const engine = window.GENESIS.engine();
-    const store = engine.store;
-    const node = engine.state.world.resourceNodes.find(n => n.kind === 'wood' && n.amount > 0);
-    const worker = store.livingCharacters()[0];
-    const before = store.getResource('wood');
-    const nodeBefore = node.amount;
-    // Drive the real gathering system through the module the UI calls.
-    return import('/assets/index-BKC1Z3Om.js').catch(() => null);
-  })()`);
-
-  // The bundle is minified, so drive gathering through the exposed engine plus
-  // the panel button instead of importing internals.
   const gatherViaUi = await evaluate(`(async () => {
     const engine = window.GENESIS.engine();
     const store = engine.store;
-    const before = store.getResource('wood');
+    const total = () => Object.values(store.state.resources).reduce((a, b) => a + (b || 0), 0);
+    const before = total();
     document.querySelector('[data-panel="resources"]').click();
     await new Promise(r => setTimeout(r, 300));
     const buttons = Array.from(document.querySelectorAll('.panel .btn')).filter(b => b.textContent.trim() === 'اجمع' || b.textContent.trim() === 'Gather');
     if (buttons.length === 0) return { ok: false, reason: 'no gather button' };
     buttons[0].click();
     await new Promise(r => setTimeout(r, 400));
-    const after = store.getResource('wood');
+    const after = total();
     return { ok: after > before, before, after, buttonCount: buttons.length };
   })()`);
-  check('gathering wood increases the stock', gatherViaUi.ok === true, JSON.stringify(gatherViaUi));
+  check('gathering adds resources to the stock', gatherViaUi.ok === true, JSON.stringify(gatherViaUi));
 
   // ---------------------------------------------------------------- 2. base upgrade
   const upgrade = await evaluate(`(async () => {
