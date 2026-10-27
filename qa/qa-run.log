@@ -1,0 +1,160 @@
+[qa] launching Brave with remote debugging on 9333
+[qa] Brave ready: Chrome/156.0.8078.48
+[qa] navigating to http://127.0.0.1:4173/
+[qa] title screen present: true
+[qa] screenshot -> C:\Users\Anas\Documents\Game minemix\qa\screenshots\01-title.png
+[qa] starting a new game
+[qa] startNewGame -> ok
+[qa] HUD present: true
+[qa] panel tabs: 18 📜 البداية | 👥 السكان | 🍺 حانة الوحوش | 🌳 شجرة العائلة | 🧬 مختبر الجينات | ⚔ القتال
+[qa] screenshot -> C:\Users\Anas\Documents\Game minemix\qa\screenshots\02-game.png
+[qa] opening every panel
+[qa] panel results: [
+ {
+  "id": "tutorial",
+  "ok": false,
+  "chars": 0,
+  "error": null
+ },
+ {
+  "id": "characters",
+  "ok": true,
+  "chars": 99,
+  "error": false
+ },
+ {
+  "id": "tavern",
+  "ok": true,
+  "chars": 135,
+  "error": false
+ },
+ {
+  "id": "family",
+  "ok": true,
+  "chars": 130,
+  "error": false
+ },
+ {
+  "id": "genetics",
+  "ok": true,
+  "chars": 521,
+  "error": false
+ },
+ {
+  "id": "combat",
+  "ok": true,
+  "chars": 111,
+  "error": false
+ },
+ {
+  "id": "ranked",
+  "ok": true,
+  "chars": 172,
+  "error": false
+ },
+ {
+  "id": "construction",
+  "ok": true,
+  "chars": 2594,
+  "error": false
+ },
+ {
+  "id": "resources",
+  "ok": true,
+  "chars": 1878,
+  "error": false
+ },
+ {
+  "id": "inventory",
+  "ok": true,
+  "chars": 70,
+  "error": false
+ },
+ {
+  "id": "research",
+  "ok": true,
+  "chars": 125,
+  "error": false
+ },
+ {
+  "id": "religion",
+  "ok": true,
+  "chars": 150,
+  "error": false
+ },
+ {
+  "id": "factions",
+  "ok": true,
+  "chars": 240,
+  "error": false
+ },
+ {
+  "id": "quests",
+  "ok": true,
+  "chars": 86,
+  "error": false
+ },
+ {
+  "id": "worldmap",
+  "ok": true,
+  "chars": 330,
+  "error": false
+ },
+ {
+  "id": "settings",
+  "ok": true,
+  "chars": 230,
+  "error": false
+ },
+ {
+  "id": "visitor",
+  "ok": true,
+  "chars": 64,
+  "error": false
+ },
+ {
+  "id": "character",
+  "ok": true,
+  "chars": 27,
+  "error": false
+ }
+]
+[qa] screenshot -> C:\Users\Anas\Documents\Game minemix\qa\screenshots\03-panels.png
+[qa] running simulation checks
+[qa] simulation state: {
+ "founder": "باسم صقر",
+ "founderRace": "human",
+ "founderSex": "female",
+ "founderLevel": 1,
+ "capacity": 10,
+ "baseLevel": 1,
+ "resources": {
+  "wood": 120,
+  "stone": 80,
+  "iron": 20,
+  "food": 45,
+  "water": 60,
+  "coins": 120,
+  "tools": 12,
+  "herbs": 8,
+  "leather": 6,
+  "bone": 4
+ },
+ "food": 45,
+ "living": 1,
+ "tabs": 18,
+ "dir": "rtl",
+ "lang": "ar"
+}
+[qa] advancing 40 in-game days
+[qa] advance -> {"ok":true,"day":40,"year":1,"food":5,"living":1,"visitors":1,"tavern":3,"notifications":19}
+[qa] screenshot -> C:\Users\Anas\Documents\Game minemix\qa\screenshots\04-after-time.png
+[qa] save/load round trip
+[qa] persist -> {"ok":true,"loaded":true,"before":{"living":1,"food":5,"day":40}}
+[qa] screenshot -> C:\Users\Anas\Documents\Game minemix\qa\screenshots\05-reloaded.png
+[qa] after reload -> {"living":1,"food":5,"day":40,"chars":1}
+
+===== QA REPORT =====
+console errors/warnings: 0
+uncaught exceptions: 0
+[qa] report -> C:\Users\Anas\Documents\Game minemix\qa\report.json
