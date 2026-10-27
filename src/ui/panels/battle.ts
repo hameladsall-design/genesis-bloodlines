@@ -223,7 +223,10 @@ registerPanel({
   order: 41,
   size: 'wide',
   render(root, ctx) {
-    const ranked = ctx.state.base.level >= 1 ? encountersAvailable(ctx.state).filter((e: EncounterDef) => e.kind === 'elite' || e.kind === 'boss') : [];
+    // Ranked mode offers every encounter the player has access to: the mode
+    // is about the stakes (permanent death), not about a separate ladder of
+    // tougher enemies. Bosses and elites are flagged.
+    const ranked = encountersAvailable(ctx.state);
 
     root.appendChild(
       el('div', { class: 'ranked-warning' }, [
