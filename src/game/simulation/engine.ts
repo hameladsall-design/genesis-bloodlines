@@ -217,4 +217,8 @@ export class GameEngine {
 export function bootstrapWorldEntities(store: GameStore): void {
   store.state.factions = createFactions(store);
   store.state.quests = createQuests(store);
+  // The tavern opens with a roster already in place, so the player has
+  // someone to hire on day one instead of waiting for the first rotation.
+  refreshTavern(store);
+  store.state.tavernRosterDay = store.state.calendar.totalDays;
 }
