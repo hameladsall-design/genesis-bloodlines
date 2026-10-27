@@ -25,7 +25,7 @@
  {
   "id": "tavern",
   "ok": true,
-  "chars": 135,
+  "chars": 381,
   "error": false
  },
  {
@@ -43,7 +43,7 @@
  {
   "id": "combat",
   "ok": true,
-  "chars": 111,
+  "chars": 445,
   "error": false
  },
  {
@@ -97,7 +97,7 @@
  {
   "id": "worldmap",
   "ok": true,
-  "chars": 330,
+  "chars": 335,
   "error": false
  },
  {
@@ -147,7 +147,7 @@
  "lang": "ar"
 }
 [qa] advancing 40 in-game days
-[qa] advance -> {"ok":true,"day":40,"year":1,"food":5,"living":1,"visitors":1,"tavern":3,"notifications":19}
+[qa] advance -> {"ok":true,"day":40,"year":1,"food":5,"living":1,"visitors":1,"tavern":3,"notifications":13}
 [qa] screenshot -> C:\Users\Anas\Documents\Game minemix\qa\screenshots\04-after-time.png
 [qa] save/load round trip
 [qa] persist -> {"ok":true,"loaded":true,"before":{"living":1,"food":5,"day":40}}
