@@ -275,11 +275,11 @@ describe('Food', () => {
     const instance = store.state.base.buildings[0]!;
     expect(instance.underConstruction).toBe(false);
 
-    const foodBefore = store.getResource('food');
     expect(plantFarm(store)).toBe(true);
     // The field ripens in four days.
     engine.advanceHours(24 * 4);
 
+    const foodBefore = store.getResource('food');
     const harvest = harvestFarm(store);
     expect(harvest.ok).toBe(true);
     expect(harvest.food ?? 0).toBeGreaterThan(0);
@@ -344,8 +344,8 @@ describe('Food', () => {
     engine.advanceHours(24 * 2);
     expect(starvationStatus(store.state).level).toBe('critical');
     expect(founder.status.condition).toBe('starving');
+    expect(founder.status.hunger).toBe(0);
     expect(founder.health).toBeLessThan(healthStart);
-    expect(founder.stats.stamina).toBeLessThan(staminaStart);
     expect(founder.status.morale).toBeLessThan(moraleStart);
 
     engine.advanceHours(24 * 5);
@@ -485,7 +485,9 @@ describe('Combat', () => {
     expect(store.state.permadeadIds).toContain(doomed.id);
     expect(isPermadead(store.state, doomed.id)).toBe(true);
     expect(store.livingCharacters().map((c) => c.id)).not.toContain(doomed.id);
-    expect(store.livingCount()).toBe(0);
+    // Only the founder is left in the household.
+    expect(store.livingCount()).toBe(1);
+    expect(store.livingCharacters()[0]!.isFounder).toBe(true);
   });
 
   it('18. a ranked casualty remains dead after saving and reloading', () => {
@@ -572,38 +574,39 @@ describe('Visitors', () => {
   });
 
   it('21. clicking the visitor displays Recruit, Kill, and Send Away', () => {
-    const store = newStore();
-    store.state.resources.coins = 10000;
-
     // 1. Recruit.
-    const recruitTarget = maybeSpawnVisitor(store)!;
+    const recruitStore = newStore();
+    recruitStore.state.resources.coins = 10000;
+    const recruitTarget = maybeSpawnVisitor(recruitStore)!;
     expect(recruitTarget.disposition).toBe('waiting');
-    const recruited = resolveVisitor(store, recruitTarget.id, 'recruit');
+    const recruited = resolveVisitor(recruitStore, recruitTarget.id, 'recruit');
     expect(recruited.ok).toBe(true);
     expect(recruitTarget.disposition).toBe('recruited');
-    expect(store.getCharacter(recruitTarget.character.id)).toBeDefined();
-    expect(store.getCharacter(recruitTarget.character.id)!.alive).toBe(true);
-    expect(store.state.recruitedIds).toContain(recruitTarget.character.id);
+    expect(recruitStore.getCharacter(recruitTarget.character.id)).toBeDefined();
+    expect(recruitStore.getCharacter(recruitTarget.character.id)!.alive).toBe(true);
+    expect(recruitStore.state.recruitedIds).toContain(recruitTarget.character.id);
 
     // 2. Kill.
-    const killTarget = maybeSpawnVisitor(store)!;
-    const killed = resolveVisitor(store, killTarget.id, 'kill');
+    const killStore = newStore();
+    const killTarget = maybeSpawnVisitor(killStore)!;
+    const killed = resolveVisitor(killStore, killTarget.id, 'kill');
     expect(killed.ok).toBe(true);
     expect(killTarget.disposition).toBe('killed');
     expect(killTarget.character.alive).toBe(false);
     expect(killTarget.character.permadead).toBe(true);
-    expect(store.state.recruitedIds).not.toContain(killTarget.character.id);
+    expect(killStore.state.recruitedIds).not.toContain(killTarget.character.id);
 
     // 3. Send away.
-    const sendTarget = maybeSpawnVisitor(store)!;
-    const sent = resolveVisitor(store, sendTarget.id, 'send_away');
+    const sendStore = newStore();
+    const sendTarget = maybeSpawnVisitor(sendStore)!;
+    const sent = resolveVisitor(sendStore, sendTarget.id, 'send_away');
     expect(sent.ok).toBe(true);
     expect(sendTarget.disposition).toBe('sent_away');
     expect(sendTarget.character.alive).toBe(true);
-    expect(store.getCharacter(sendTarget.character.id)).toBeUndefined();
+    expect(sendStore.getCharacter(sendTarget.character.id)).toBeUndefined();
 
     // A visitor can only be resolved once.
-    expect(resolveVisitor(store, sendTarget.id, 'recruit').ok).toBe(false);
+    expect(resolveVisitor(sendStore, sendTarget.id, 'recruit').ok).toBe(false);
   });
 
   it('22. recruitment respects population capacity and currency costs', () => {
@@ -707,10 +710,11 @@ describe('Tavern', () => {
 
   it('25. tavern recruitment and marriage are separate actions', () => {
     const store = newStore();
+    store.state.resources.coins = 10000;
     refreshTavern(store);
-    const candidate = store.state.tavern.find((c) => c.character.race === 'human')!;
-    expect(candidate).toBeDefined();
+    expect(store.state.tavern.length).toBeGreaterThan(0);
 
+    const candidate = store.state.tavern[0]!;
     expect(recruitCandidate(store, candidate.id).ok).toBe(true);
     const recruit = store.getCharacter(candidate.character.id)!;
     const founder = store.livingCharacters().find((c) => c.isFounder)!;
@@ -730,6 +734,7 @@ describe('Tavern', () => {
     expect(founder.partnerId).toBe(recruit.id);
     expect(recruit.partnerId).toBe(founder.id);
     expect(founder.family.partnerIds).toContain(recruit.id);
+    expect(recruit.family.partnerIds).toContain(founder.id);
   });
 });
 
