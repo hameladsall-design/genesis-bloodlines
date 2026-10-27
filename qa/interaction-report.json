@@ -1,0 +1,67 @@
+{
+  "results": [
+    {
+      "name": "new game starts",
+      "ok": true
+    },
+    {
+      "name": "gathering wood increases the stock",
+      "ok": false,
+      "detail": "{\"ok\":false,\"before\":120,\"after\":120,\"buttonCount\":80}"
+    },
+    {
+      "name": "base upgrade raises level and capacity",
+      "ok": true,
+      "detail": "{\"ok\":true,\"before\":{\"level\":1,\"capacity\":10,\"wood\":120,\"stone\":80},\"after\":{\"level\":2,\"capacity\":16,\"wood\":70,\"stone\":50}}"
+    },
+    {
+      "name": "placing a building costs materials and adds an instance",
+      "ok": true,
+      "detail": "{\"ok\":true,\"before\":{\"wood\":70,\"stone\":50,\"buildings\":0},\"after\":{\"wood\":50,\"stone\":50,\"buildings\":1}}"
+    },
+    {
+      "name": "tavern recruitment charges the price and adds the character",
+      "ok": false,
+      "detail": "{\"ok\":false,\"reason\":\"no recruit button\",\"priceText\":\"\"}"
+    },
+    {
+      "name": "recruited candidate is marked taken (no double purchase)",
+      "ok": true,
+      "detail": "{\"ok\":true,\"skipped\":true}"
+    },
+    {
+      "name": "normal battle runs and produces a log",
+      "ok": false,
+      "detail": "{\"ok\":false,\"reason\":\"no combatants\"}"
+    },
+    {
+      "name": "team cap enforced (unit suite)",
+      "ok": true,
+      "detail": "living=1"
+    },
+    {
+      "name": "visitor offers exactly recruit / kill / send away",
+      "ok": true,
+      "detail": "{\"ok\":true,\"labels\":[\"ضمّه إلى العائلة (23 عملة)\",\"اقتل الزائر\",\"أرسله بعيدًا\"],\"day\":1}"
+    },
+    {
+      "name": "ranked panel states that death is permanent",
+      "ok": false,
+      "detail": "{\"ok\":false,\"text\":\"الموت هنا دائمفي ساحة الترتيب، من يسقط يموت للأبد. لا تُبعث الأشباح، ولا يعود إلى الصفوف ب\",\"buttons\":[]}"
+    },
+    {
+      "name": "character profile shows level, race and sex",
+      "ok": true,
+      "detail": "{\"ok\":true,\"level\":1,\"race\":\"human\",\"sex\":\"male\",\"head\":\"باسم صقرسليمالمؤسسبشري · ذكر · مستوى 1العمر 25.0الأمد 100غزاة هذا العالم المدمّر، قصيرو العمر لكن أمتعهم موازنةً بين القدرات.التقدّمالمستوى1الخبرة0 / 100قدرات ا\"}"
+    },
+    {
+      "name": "save then load restores the world exactly",
+      "ok": true,
+      "detail": "{\"ok\":true,\"before\":{\"living\":1,\"coins\":75,\"food\":47,\"day\":1,\"chars\":1,\"buildings\":1},\"after\":{\"living\":1,\"coins\":75,\"food\":47,\"day\":1,\"chars\":1,\"buildings\":1},\"identical\":true}"
+    }
+  ],
+  "consoleErrors": [
+    "[log] Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "pageErrors": []
+}
