@@ -18,7 +18,7 @@
     {
       "id": "tavern",
       "ok": true,
-      "chars": 135,
+      "chars": 381,
       "error": false
     },
     {
@@ -36,7 +36,7 @@
     {
       "id": "combat",
       "ok": true,
-      "chars": 111,
+      "chars": 445,
       "error": false
     },
     {
@@ -90,7 +90,7 @@
     {
       "id": "worldmap",
       "ok": true,
-      "chars": 330,
+      "chars": 335,
       "error": false
     },
     {
@@ -145,7 +145,7 @@
     "living": 1,
     "visitors": 1,
     "tavern": 3,
-    "notifications": 19
+    "notifications": 13
   },
   "persist": {
     "ok": true,
