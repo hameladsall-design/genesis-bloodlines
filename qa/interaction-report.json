@@ -5,9 +5,9 @@
       "ok": true
     },
     {
-      "name": "gathering wood increases the stock",
+      "name": "gathering adds resources to the stock",
       "ok": false,
-      "detail": "{\"ok\":false,\"before\":120,\"after\":120,\"buttonCount\":80}"
+      "detail": "{\"ok\":false,\"reason\":\"no gather button\"}"
     },
     {
       "name": "base upgrade raises level and capacity",
@@ -16,8 +16,8 @@
     },
     {
       "name": "placing a building costs materials and adds an instance",
-      "ok": true,
-      "detail": "{\"ok\":true,\"before\":{\"wood\":70,\"stone\":50,\"buildings\":0},\"after\":{\"wood\":50,\"stone\":50,\"buildings\":1}}"
+      "ok": false,
+      "detail": "{\"ok\":false,\"reason\":\"no build buttons\"}"
     },
     {
       "name": "tavern recruitment charges the price and adds the character",
@@ -42,7 +42,7 @@
     {
       "name": "visitor offers exactly recruit / kill / send away",
       "ok": true,
-      "detail": "{\"ok\":true,\"labels\":[\"ضمّه إلى العائلة (23 عملة)\",\"اقتل الزائر\",\"أرسله بعيدًا\"],\"day\":1}"
+      "detail": "{\"ok\":true,\"labels\":[\"ضمّه إلى العائلة (30 عملة)\",\"اقتل الزائر\",\"أرسله بعيدًا\"],\"day\":1}"
     },
     {
       "name": "ranked panel states that death is permanent",
@@ -57,7 +57,7 @@
     {
       "name": "save then load restores the world exactly",
       "ok": true,
-      "detail": "{\"ok\":true,\"before\":{\"living\":1,\"coins\":75,\"food\":47,\"day\":1,\"chars\":1,\"buildings\":1},\"after\":{\"living\":1,\"coins\":75,\"food\":47,\"day\":1,\"chars\":1,\"buildings\":1},\"identical\":true}"
+      "detail": "{\"ok\":true,\"before\":{\"living\":1,\"coins\":80,\"food\":44,\"day\":1,\"chars\":1,\"buildings\":0},\"after\":{\"living\":1,\"coins\":80,\"food\":44,\"day\":1,\"chars\":1,\"buildings\":0},\"identical\":true}"
     }
   ],
   "consoleErrors": [
