@@ -6,8 +6,8 @@
     },
     {
       "name": "gathering adds resources to the stock",
-      "ok": false,
-      "detail": "{\"ok\":false,\"reason\":\"no gather button\"}"
+      "ok": true,
+      "detail": "{\"ok\":true,\"before\":475,\"after\":478,\"buttonCount\":80,\"label\":\"اجمع\"}"
     },
     {
       "name": "base upgrade raises level and capacity",
@@ -17,32 +17,32 @@
     {
       "name": "placing a building costs materials and adds an instance",
       "ok": false,
-      "detail": "{\"ok\":false,\"reason\":\"no build buttons\"}"
+      "detail": "{\"ok\":false,\"reason\":\"no build buttons\",\"panelCount\":0,\"bodyHead\":null}"
     },
     {
       "name": "tavern recruitment charges the price and adds the character",
-      "ok": false,
-      "detail": "{\"ok\":false,\"reason\":\"no recruit button\",\"priceText\":\"\"}"
+      "ok": true,
+      "detail": "{\"ok\":true,\"price\":10,\"coinsBefore\":80,\"coinsAfter\":70,\"livingBefore\":1,\"livingAfter\":2}"
     },
     {
       "name": "recruited candidate is marked taken (no double purchase)",
       "ok": true,
-      "detail": "{\"ok\":true,\"skipped\":true}"
+      "detail": "{\"ok\":true,\"skipped\":true,\"taken\":1,\"coinsBefore\":70,\"livingBefore\":2}"
     },
     {
       "name": "normal battle runs and produces a log",
-      "ok": false,
-      "detail": "{\"ok\":false,\"reason\":\"no combatants\"}"
+      "ok": true,
+      "detail": "{\"ok\":true,\"strength\":\"124\",\"rows\":2,\"foodBefore\":48,\"foodAfter\":57,\"coinsBefore\":70,\"coinsAfter\":84,\"logHead\":\"بدأت المعركة: قطيعُ الذئاب.معركةٌ عادية: السقوط لا يعني الموت.الجولة 1.ضرب ذئبٌ جائع باسم صقر بـ«خدشُ المخالب» ضررًا قدر\"}"
     },
     {
       "name": "team cap enforced (unit suite)",
       "ok": true,
-      "detail": "living=1"
+      "detail": "living=2"
     },
     {
       "name": "visitor offers exactly recruit / kill / send away",
       "ok": true,
-      "detail": "{\"ok\":true,\"labels\":[\"ضمّه إلى العائلة (30 عملة)\",\"اقتل الزائر\",\"أرسله بعيدًا\"],\"day\":1}"
+      "detail": "{\"ok\":true,\"labels\":[\"ضمّه إلى العائلة (34 عملة)\",\"اقتل الزائر\",\"أرسله بعيدًا\"],\"day\":1}"
     },
     {
       "name": "ranked panel states that death is permanent",
@@ -52,12 +52,12 @@
     {
       "name": "character profile shows level, race and sex",
       "ok": true,
-      "detail": "{\"ok\":true,\"level\":1,\"race\":\"human\",\"sex\":\"male\",\"head\":\"باسم صقرسليمالمؤسسبشري · ذكر · مستوى 1العمر 25.0الأمد 100غزاة هذا العالم المدمّر، قصيرو العمر لكن أمتعهم موازنةً بين القدرات.التقدّمالمستوى1الخبرة0 / 100قدرات ا\"}"
+      "detail": "{\"ok\":true,\"level\":1,\"race\":\"human\",\"sex\":\"male\",\"head\":\"باسم صقرسليمالمؤسسبشري · ذكر · مستوى 1العمر 25.0الأمد 100غزاة هذا العالم المدمّر، قصيرو العمر لكن أمتعهم موازنةً بين القدرات.التقدّمالمستوى1الخبرة45 / 100قدرات \"}"
     },
     {
       "name": "save then load restores the world exactly",
       "ok": true,
-      "detail": "{\"ok\":true,\"before\":{\"living\":1,\"coins\":80,\"food\":44,\"day\":1,\"chars\":1,\"buildings\":0},\"after\":{\"living\":1,\"coins\":80,\"food\":44,\"day\":1,\"chars\":1,\"buildings\":0},\"identical\":true}"
+      "detail": "{\"ok\":true,\"before\":{\"living\":2,\"coins\":84,\"food\":55,\"day\":1,\"chars\":2,\"buildings\":0},\"after\":{\"living\":2,\"coins\":84,\"food\":55,\"day\":1,\"chars\":2,\"buildings\":0},\"identical\":true}"
     }
   ],
   "consoleErrors": [
