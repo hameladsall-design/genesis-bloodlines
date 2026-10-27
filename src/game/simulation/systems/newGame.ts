@@ -17,6 +17,7 @@ import type {
 import { generateResourceNodes, WORLD_SIZES } from './world';
 import { createFounder } from './family';
 import { baseStatsFor, getSpecies } from '../../content/species';
+import { ZONES as ENCOUNTER_ZONES } from '../../content/enemies';
 
 export const DEFAULT_CONFIG: NewGameConfig = {
   founderName: 'آرِس',
@@ -148,7 +149,9 @@ export function createNewGame(config: NewGameConfig): GameState {
       resourceNodes,
       baseX: founder.x,
       baseY: founder.y,
-      unlockedZones: ['wilds'],
+      // The first stage's hunting ground is open from day one, so the player
+      // always has something to fight. Later zones open through boss victories.
+      unlockedZones: ['wilds', ENCOUNTER_ZONES.ashfallRoad],
     },
     characters: {},
     characterOrder: [],
