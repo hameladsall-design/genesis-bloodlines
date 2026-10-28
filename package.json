@@ -22,7 +22,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "phaser": "^3.87.0"
+    "phaser": "^4.2.1"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
