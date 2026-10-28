@@ -113,6 +113,29 @@ site and adding a full English locale file later is a drop-in
 
 ---
 
+## Verification
+
+Nothing in this README is a claim without a test behind it.
+
+| Check | Command | Result |
+|---|---|---|
+| Typecheck | `npm run typecheck` | clean |
+| Unit + acceptance suites | `npm test` | **115 passing** across 8 files, including all **33** acceptance criteria |
+| Production bundle | `npm run build` | `dist/` — index ≈ 304 kB, Phaser chunk ≈ 1.48 MB |
+| Browser smoke test | `node qa/brave-qa.mjs` | title screen, HUD, all 18 panels, a 40-day advance (food 45 → 5, exactly 1/day), 1 visitor, 3 tavern offers, save/load round-trip — **0 console errors, 0 uncaught exceptions** |
+| Browser interaction test | `node qa/interaction-qa.mjs` | **13/13** real UI checks — gathering, base upgrade, building placement, tavern purchase of exactly 10 coins with no double-buy, a normal battle that pays out, the visitor's three choices, the ranked-permadeath warning, a character profile, byte-identical save/load, and a team picker that refuses an 11th fighter |
+
+The `qa/` scripts drive a real Chromium-family browser over the DevTools Protocol
+(`qa/cdp.mjs` is a dependency-free CDP client), so they exercise the shipped
+bundle rather than a mock. Point them at a running `npm run preview` on port
+4173. Screenshots land in `qa/screenshots/`.
+
+`chrome-devtools-mcp` is also wired up as a dev dependency so the project can be
+inspected through an MCP browser session; the raw-CDP harness above is the
+dependency-free fallback and the one the reported results come from.
+
+---
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
