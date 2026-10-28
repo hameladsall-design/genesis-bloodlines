@@ -16,26 +16,26 @@
     },
     {
       "name": "placing a building costs materials and adds an instance",
-      "ok": false,
-      "detail": "{\"ok\":false,\"reason\":\"no build buttons\",\"panelCount\":0,\"bodyHead\":null}"
+      "ok": true,
+      "detail": "{\"ok\":true,\"before\":{\"wood\":70,\"stone\":50,\"buildings\":0},\"after\":{\"wood\":50,\"stone\":50,\"buildings\":1}}"
     },
     {
       "name": "tavern recruitment charges the price and adds the character",
       "ok": true,
-      "detail": "{\"ok\":true,\"price\":10,\"coinsBefore\":80,\"coinsAfter\":70,\"livingBefore\":1,\"livingAfter\":2}"
+      "detail": "{\"ok\":true,\"price\":10,\"coinsBefore\":75,\"coinsAfter\":65,\"livingBefore\":1,\"livingAfter\":2}"
     },
     {
       "name": "recruited candidate is marked taken (no double purchase)",
       "ok": true,
-      "detail": "{\"ok\":true,\"skipped\":true,\"taken\":1,\"coinsBefore\":70,\"livingBefore\":2}"
+      "detail": "{\"ok\":true,\"skipped\":true,\"taken\":1,\"coinsBefore\":65,\"livingBefore\":2}"
     },
     {
       "name": "normal battle runs and produces a log",
       "ok": true,
-      "detail": "{\"ok\":true,\"strength\":\"124\",\"rows\":2,\"foodBefore\":48,\"foodAfter\":57,\"coinsBefore\":70,\"coinsAfter\":84,\"logHead\":\"بدأت المعركة: قطيعُ الذئاب.معركةٌ عادية: السقوط لا يعني الموت.الجولة 1.ضرب ذئبٌ جائع باسم صقر بـ«خدشُ المخالب» ضررًا قدر\"}"
+      "detail": "{\"ok\":true,\"strength\":\"124\",\"rows\":2,\"foodBefore\":48,\"foodAfter\":57,\"coinsBefore\":65,\"coinsAfter\":79,\"logHead\":\"بدأت المعركة: قطيعُ الذئاب.معركةٌ عادية: السقوط لا يعني الموت.الجولة 1.ضرب ذئبٌ جائع باسم صقر بـ«خدشُ المخالب» ضررًا قدر\"}"
     },
     {
-      "name": "team cap enforced (unit suite)",
+      "name": "household roster is readable",
       "ok": true,
       "detail": "living=2"
     },
@@ -46,8 +46,8 @@
     },
     {
       "name": "ranked panel states that death is permanent",
-      "ok": false,
-      "detail": "{\"ok\":false,\"text\":\"الموت هنا دائمفي ساحة الترتيب، من يسقط يموت للأبد. لا تُبعث الأشباح، ولا يعود إلى الصفوف ب\",\"buttons\":[]}"
+      "ok": true,
+      "detail": "{\"ok\":true,\"text\":\"الموت هنا دائمفي ساحة الترتيب، من يسقط يموت للأبد. لا تُبعث الأشباح، ولا يعود إلى الصفوف ب\",\"buttons\":[\"ادخل الساحة — موت دائم\",\"ادخل الساحة — موت دائم\",\"ادخل الساحة — موت دائم\",\"ادخل الساحة — موت دائم\"],\"panelCount\":1}"
     },
     {
       "name": "character profile shows level, race and sex",
@@ -57,11 +57,14 @@
     {
       "name": "save then load restores the world exactly",
       "ok": true,
-      "detail": "{\"ok\":true,\"before\":{\"living\":2,\"coins\":84,\"food\":55,\"day\":1,\"chars\":2,\"buildings\":0},\"after\":{\"living\":2,\"coins\":84,\"food\":55,\"day\":1,\"chars\":2,\"buildings\":0},\"identical\":true}"
+      "detail": "{\"ok\":true,\"before\":{\"living\":2,\"coins\":79,\"food\":55,\"day\":1,\"chars\":2,\"buildings\":1},\"after\":{\"living\":2,\"coins\":79,\"food\":55,\"day\":1,\"chars\":2,\"buildings\":1},\"identical\":true}"
+    },
+    {
+      "name": "team picker refuses an 11th fighter (cap = 10)",
+      "ok": true,
+      "detail": "{\"rows\":14,\"picked\":10,\"counter\":[\"10 / 10\",\"991\"],\"ok\":true}"
     }
   ],
-  "consoleErrors": [
-    "[log] Failed to load resource: the server responded with a status of 404 (Not Found)"
-  ],
+  "consoleErrors": [],
   "pageErrors": []
 }
