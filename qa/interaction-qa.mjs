@@ -80,6 +80,11 @@ try {
     const before = { wood: store.getResource('wood'), stone: store.getResource('stone'), buildings: engine.state.base.buildings.length };
     document.querySelector('[data-panel="construction"]').click();
     await new Promise(r => setTimeout(r, 500));
+    // The tab toggles, so make sure the panel is really open before reading it.
+    if (document.querySelectorAll('.panel').length === 0) {
+      document.querySelector('[data-panel="construction"]').click();
+      await new Promise(r => setTimeout(r, 500));
+    }
     const panels = Array.from(document.querySelectorAll('.panel'));
     const body = panels.length ? panels[panels.length - 1].querySelector('.panel-body') : null;
     const buttons = body ? Array.from(body.querySelectorAll('.grid-2 .card .btn')) : [];
@@ -168,15 +173,12 @@ try {
   check('normal battle runs and produces a log', combat.ok === true, JSON.stringify(combat));
   await screenshot('10-combat', SHOTS);
 
-  // ---------------------------------------------------------------- 6. team cap
-  const teamCap = await evaluate(`(async () => {
-    const engine = window.GENESIS.engine();
-    const store = engine.store;
-    // Pad the household so the 11th slot is reachable.
-    const { createCharacter } = await import('/src/game/simulation/systems/family.ts').catch(() => ({}));
-    return { note: 'checked via unit suite', living: store.livingCount() };
+  // ---------------------------------------------------------------- 6. team roster size
+  const teamCap = await evaluate(`(() => {
+    const store = window.GENESIS.engine().store;
+    return { note: 'the hard cap is verified end-to-end in check 11', living: store.livingCount() };
   })()`);
-  check('team cap enforced (unit suite)', true, `living=${teamCap.living}`);
+  check('household roster is readable', teamCap.living > 0, `living=${teamCap.living}`);
 
   // ---------------------------------------------------------------- 7. visitor flow
   const visitor = await evaluate(`(async () => {
@@ -204,12 +206,18 @@ try {
   const ranked = await evaluate(`(async () => {
     const engine = window.GENESIS.engine();
     document.querySelector('[data-panel="ranked"]').click();
-    await new Promise(r => setTimeout(r, 400));
-    const warn = document.querySelector('.panel .ranked-warning');
+    await new Promise(r => setTimeout(r, 500));
+    if (document.querySelectorAll('.panel').length === 0) {
+      document.querySelector('[data-panel="ranked"]').click();
+      await new Promise(r => setTimeout(r, 500));
+    }
+    const panels = Array.from(document.querySelectorAll('.panel'));
+    const body = panels.length ? panels[panels.length - 1].querySelector('.panel-body') : null;
+    const warn = body ? body.querySelector('.ranked-warning') : null;
     const text = warn ? warn.textContent : '';
-    const buttons = Array.from(document.querySelectorAll('.panel .btn')).map(b => b.textContent.trim());
+    const buttons = body ? Array.from(body.querySelectorAll('.btn')).map(b => b.textContent.trim()) : [];
     const hasDeadly = buttons.some(b => b.includes('موت دائم') || b.includes('permanent death'));
-    return { ok: !!warn && hasDeadly, text: text.slice(0, 90), buttons };
+    return { ok: !!warn && hasDeadly, text: text.slice(0, 90), buttons, panelCount: panels.length };
   })()`);
   check('ranked panel states that death is permanent', ranked.ok === true, JSON.stringify(ranked));
 
@@ -251,6 +259,44 @@ try {
     return { ok, before, after, identical: JSON.stringify(before) === JSON.stringify(after) };
   })()`);
   check('save then load restores the world exactly', persist.ok === true && persist.identical === true, JSON.stringify(persist));
+
+  // ------------------------------------------- 11. team cap really caps the UI
+  // Pad the household past the cap, then try to pick everybody. The picker
+  // must refuse the eleventh fighter instead of accepting it.
+  const cap = await evaluate(`(async () => {
+    const store = window.GENESIS.engine().store;
+    const founder = store.livingCharacters()[0];
+    for (let i = 0; i < 12; i++) {
+      const c = structuredClone(founder);
+      c.id = 'qa.filler.' + i;
+      c.firstName = 'QA' + i;
+      c.alive = true;
+      c.permadead = false;
+      c.condition = 'healthy';
+      c.health = founder.health;
+      store.addCharacter(c);
+    }
+    window.GENESIS.ui().openPanel('combat');
+    await new Promise(r => setTimeout(r, 500));
+
+    const rows = Array.from(document.querySelectorAll('.panel .combatant-row'));
+    for (const row of rows) { row.click(); await new Promise(r => setTimeout(r, 15)); }
+    await new Promise(r => setTimeout(r, 300));
+
+    const body = document.querySelector('.panel .panel-body');
+    const counter = body ? Array.from(body.querySelectorAll('.badge-count')).map(b => b.textContent.trim()) : [];
+    const picked = document.querySelectorAll('.panel .combatant-row.picked').length;
+
+    // Clean up so the rest of the run is unaffected.
+    for (const id of Object.keys(store.state.characters)) {
+      if (id.startsWith('qa.filler.')) {
+        delete store.state.characters[id];
+        store.state.characterOrder = store.state.characterOrder.filter(x => x !== id);
+      }
+    }
+    return { rows: rows.length, picked, counter, ok: picked === 10 };
+  })()`);
+  check('team picker refuses an 11th fighter (cap = 10)', cap.ok === true, JSON.stringify(cap));
 
   await sleep(1200);
   await screenshot('12-final', SHOTS);
