@@ -125,7 +125,10 @@ export async function launchBrave({ port = 9335, width = 1600, height = 900 } = 
   await browser.send('Page.enable', {}, sessionId);
   await browser.send('Log.enable', {}, sessionId).catch(() => {});
   browser.on('Log.entryAdded', (params) => {
-    if (params.entry?.level === 'error') consoleErrors.push(`[log] ${params.entry.text}`);
+    if (params.entry?.level === 'error') {
+      const e = params.entry;
+      consoleErrors.push(`[log] ${e.text}${e.url ? ` :: ${e.url}` : ''}`);
+    }
   });
 
   const evaluate = async (expression) => {
