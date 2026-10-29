@@ -124,6 +124,7 @@ Nothing in this README is a claim without a test behind it.
 | Production bundle | `npm run build` | `dist/` — index ≈ 304 kB, Phaser chunk ≈ 1.48 MB |
 | Browser smoke test | `node qa/brave-qa.mjs` | title screen, HUD, all 18 panels, a 40-day advance (food 45 → 5, exactly 1/day), 1 visitor, 3 tavern offers, save/load round-trip — **0 console errors, 0 uncaught exceptions** |
 | Browser interaction test | `node qa/interaction-qa.mjs` | **13/13** real UI checks — gathering, base upgrade, building placement, tavern purchase of exactly 10 coins with no double-buy, a normal battle that pays out, the visitor's three choices, the ranked-permadeath warning, a character profile, byte-identical save/load, and a team picker that refuses an 11th fighter |
+| GitHub Actions | [CI run #1](https://github.com/hameladsall-design/genesis-bloodlines/actions/runs/40796527564) | **green** on `ubuntu-latest` — install, typecheck, tests and production build all pass |
 
 The `qa/` scripts drive a real Chromium-family browser over the DevTools Protocol
 (`qa/cdp.mjs` is a dependency-free CDP client), so they exercise the shipped
